@@ -9,6 +9,8 @@
         "xmemory": "cpp",
         "xstddef": "cpp",
         "xstring": "cpp",
-        "coroutine": "cpp"
+        "coroutine": "cpp",
+        "xlocale": "cpp",
+        "ios": "cpp"
     }
 }
