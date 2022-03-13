@@ -183,7 +183,7 @@ private:
 
 	static BigInteger ModPowBarrett(const BigInteger &b, const BigInteger &e, const BigInteger &m);
 
-	static BigInteger ReduceBarrett(BigInteger &x, BigInteger &m, const BigInteger &mr, const BigInteger &yu);
+	static BigInteger ReduceBarrett(BigInteger x, BigInteger m, const BigInteger &mr, const BigInteger &yu);
 
 	static BigInteger ModPowMonty(BigInteger &b, const BigInteger &e, const BigInteger &m, const bool convert);
 

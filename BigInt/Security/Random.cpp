@@ -15,6 +15,7 @@
 
 #include "Random.h"
 #include <stdexcept>
+#include <cmath>
 
 vector<int32_t> Random::SeedArray = vector<int32_t>();
 

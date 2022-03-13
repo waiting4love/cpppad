@@ -17,7 +17,9 @@
 #include "..\Security\SecureRandom.h"
 #include "..\Utils\NumberStyles.h"
 #include "..\Utils\HlpBits.h"
+#include <cstring>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -314,7 +316,7 @@ BigInteger BigInteger::And(const BigInteger &value) const
 		bMag = value.Add(One).magnitude;
 	
 	resultNeg = (sign < 0) && (value.sign < 0);
-	resultLength = __max(aMag.size(), bMag.size());
+	resultLength = std::max<>(aMag.size(), bMag.size());
 
 	resultMag = vector<int32_t>(resultLength);
 
@@ -377,7 +379,7 @@ BigInteger BigInteger::Or(const BigInteger &value) const
 		bMag = value.Add(One).magnitude;
 	
 	resultNeg = (sign < 0) || (value.sign < 0);
-	resultLength = __max(aMag.size(), bMag.size());
+	resultLength = std::max<>(aMag.size(), bMag.size());
 
 	resultMag = vector<int32_t>(resultLength);
 
@@ -431,7 +433,7 @@ BigInteger BigInteger::Xor(const BigInteger &value) const
 	
 	// TODO Can just replace with sign != value.sign?
 	resultNeg = ((sign < 0) && (value.sign >= 0)) || ((sign >= 0) && (value.sign < 0));
-	resultLength = __max(aMag.size(), bMag.size());
+	resultLength = std::max<>(aMag.size(), bMag.size());
 
 	resultMag = vector<int32_t>(resultLength);
 
@@ -594,7 +596,7 @@ bool BigInteger::RabinMillerTest(const int32_t certainty, IRandom random, const 
 			itersFor100Cert = 50;
 
 		if (certainty < 100) 
-			iterations = __min(itersFor100Cert, iterations);
+			iterations = std::min<>(itersFor100Cert, iterations);
 		else
 		{
 			iterations = iterations - 50;
@@ -1075,8 +1077,7 @@ void BigInteger::ToString(ostringstream &sl, int32_t radix, vector<BigInteger> &
 
 	if (pos.GetBitLength() < 64)
 	{
-		_ui64toa_s(uint64_t(pos.GetInt64Value()), &(temp[0]), 25, radix);
-		
+		_ui64toa(uint64_t(pos.GetInt64Value()), &(temp[0]), radix);
 		uint32_t len = sl.str().size();
 		if ((len > 1) || ((len == 1) && (sl.str()[0] != '-')))
 		{
@@ -1182,13 +1183,13 @@ string BigInteger::ToString(const int32_t radix) const
 		char temp[25];
 		pos = firstNonZero;
 
-		_ultoa_s(uint64_t(magnitude[pos]), &(temp[0]), 25, radix);
+		_ultoa(uint64_t(magnitude[pos]), &(temp[0]),  radix);
 		sl << temp;
 		pos++;
 
 		while (pos < magnitude.size())
 		{
-			_ultoa_s(uint64_t(magnitude[pos]), &(temp[0]), 25, radix);
+			_ultoa(uint64_t(magnitude[pos]), &(temp[0]), radix);
 			AppendZeroExtendedString(sl, &(temp[0]), 8);
 			pos++;
 		}
@@ -1669,7 +1670,7 @@ bool BigInteger::CheckProbablePrime(const int32_t certainty, IRandom random, con
 	vector<int32_t> primeList;
 	
 	// Try to reduce the penalty for really small numbers
-	numLists = __min(GetBitLength() - 1, primeLists.size());
+	numLists = std::min<int32_t>(GetBitLength() - 1, primeLists.size());
 
 	for (i = 0; i < numLists; i++)
 	{
@@ -1837,7 +1838,7 @@ vector<int32_t> BigInteger::LastNBits(const int32_t n) const
 	if (n < 1) return ZeroMagnitude;
 	
 	numWords = (n + BitsPerInt - 1) / BitsPerInt;
-	numWords = __min(numWords, magnitude.size());
+	numWords = std::min<int32_t>(numWords, magnitude.size());
 	
 	result = vector<int32_t>(numWords);
 	memmove(&result[0], &magnitude[magnitude.size() - numWords], numWords * sizeof(int32_t));
@@ -2586,7 +2587,7 @@ BigInteger BigInteger::ModPowBarrett(const BigInteger &b, const BigInteger &_e, 
 	return y;
 }
 
-BigInteger BigInteger::ReduceBarrett(BigInteger &x, BigInteger &m, const BigInteger &mr, const BigInteger &yu)
+BigInteger BigInteger::ReduceBarrett(BigInteger x, BigInteger m, const BigInteger &mr, const BigInteger &yu)
 {
 	int32_t xLen, mLen, k;
 	BigInteger q1, q2, q3, r1, r2, r3;
@@ -3362,7 +3363,7 @@ string BigInteger::IntToOctal(const int32_t _input)
 
 	while (input != 0)
 	{
-		_ultoa_s(uint64_t(input & 7), &(temp[0]), 25, 10);
+		_ultoa(uint64_t(input & 7), &(temp[0]), 10);
 	
 		bits.push_back(temp[0]);
 		input = uint32_t(input) >> 3;

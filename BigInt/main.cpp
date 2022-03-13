@@ -11,7 +11,7 @@ int main() {
     
     BigInteger::Boot();
 
-    BigInteger v = ss.str().c_str();
+    BigInteger v { ss.str() };
     cout << v << endl;;
 
     auto prev = chrono::system_clock::now();

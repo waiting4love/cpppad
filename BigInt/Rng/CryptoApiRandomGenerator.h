@@ -23,6 +23,7 @@
 #include "../Interfaces/IRandomNumberGenerator.h"
 #include "../Rng/RandomNumberGenerator.h"
 #include <stdexcept>
+#include <cstring>
 
 class CryptoApiRandomGenerator: public virtual IICryptoApiRandomGenerator, public virtual IIRandomGenerator
 {

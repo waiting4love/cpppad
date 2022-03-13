@@ -17,6 +17,7 @@
 #include "../Utils/HlpBits.h"
 #include "../Rng/CryptoApiRandomGenerator.h"
 #include <chrono>
+#include <cmath>
 
 using namespace std::chrono;
 
